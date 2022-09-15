@@ -1,8 +1,14 @@
 import { useContext } from "react";
 import { TaskContext } from "../context/TaskContext.jsx";
 
+import { Modal } from "./Modal/Modal.jsx";
+import { TaskModal } from "./Modal/TaskModal.jsx";
+import { useModal } from "../hooks/useModal.js";
+
 function TaskCard({ task }) {
-  const { deleteTask } = useContext(TaskContext);
+  const { deleteTask, editTask } = useContext(TaskContext);
+
+  const { isOpen, openModal, closeModal } = useModal(false);
 
   return (
     <div className='bg-gray-800 text-white p-4 rounded-md'>
@@ -16,6 +22,16 @@ function TaskCard({ task }) {
       >
         Eliminar Tarea
       </button>
+      <button
+        onClick={openModal}
+        className='bg-red-500 px-2 py-1 rounded-md mt-4 hover:bg-red-400 ml-3'
+      >
+        Editar Tarea
+      </button>
+
+      <Modal isOpen={isOpen} closeModal={closeModal}>
+        <TaskModal task={task} editTask={editTask} closeModal={closeModal} />
+      </Modal>
     </div>
   );
 }
